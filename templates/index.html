@@ -2,62 +2,1091 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Credit Card Risk Prediction</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- google font -->
-    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Ultra&display=swap" rel="stylesheet">
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- bootstrap -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
 
-    <!-- css -->
-    <link rel="stylesheet" href="static\css\style.css">
-    <title>Flask</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #0f0c29;
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            min-height: 100vh;
+            padding: 20px 0;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated stars background */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.5); }
+        }
+
+        /* Floating orbs */
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.6;
+            pointer-events: none;
+            animation: float-orb 20s infinite ease-in-out;
+        }
+
+        .orb1 {
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            top: -150px;
+            left: -150px;
+            animation-delay: 0s;
+        }
+
+        .orb2 {
+            width: 400px;
+            height: 400px;
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            bottom: -200px;
+            right: -200px;
+            animation-delay: 5s;
+        }
+
+        .orb3 {
+            width: 250px;
+            height: 250px;
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            top: 50%;
+            left: 50%;
+            animation-delay: 10s;
+        }
+
+        @keyframes float-orb {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(100px, -100px) scale(1.1); }
+            50% { transform: translate(-50px, 100px) scale(0.9); }
+            75% { transform: translate(150px, 50px) scale(1.05); }
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Welcome screen */
+        .welcome-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            animation: fadeOut 1s 2.5s forwards;
+        }
+
+        .welcome-content {
+            text-align: center;
+            color: white;
+        }
+
+        .welcome-title {
+            font-size: 60px;
+            font-weight: 900;
+            margin-bottom: 20px;
+            animation: scaleIn 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .welcome-subtitle {
+            font-size: 24px;
+            font-weight: 300;
+            animation: fadeInUp 1s 0.5s backwards;
+        }
+
+        .welcome-loader {
+            margin-top: 40px;
+            width: 60px;
+            height: 60px;
+            border: 5px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                visibility: hidden;
+            }
+        }
+
+        .main-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 40px;
+            padding: 50px;
+            box-shadow: 0px 30px 80px rgba(0,0,0,0.5), inset 0 0 80px rgba(255,255,255,0.05);
+            animation: slideUp 0.8s 2.5s backwards ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .main-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+            animation: shimmer 4s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            font-weight: 900;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 48px;
+            margin-bottom: 15px;
+            animation: gradientShift 3s ease infinite;
+            background-size: 200% 200%;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .subtitle {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 18px;
+            margin-bottom: 40px;
+            font-weight: 300;
+        }
+
+        .section-title {
+            font-weight: 800;
+            margin-top: 40px;
+            margin-bottom: 25px;
+            color: white;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            text-shadow: 0 0 20px rgba(102, 126, 234, 0.8);
+            position: relative;
+        }
+
+        .section-title .icon {
+            font-size: 36px;
+            margin-right: 15px;
+            display: inline-block;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 10px;
+            animation: expand 2s ease-in-out infinite;
+        }
+
+        @keyframes expand {
+            0%, 100% { width: 80px; }
+            50% { width: 120px; }
+        }
+
+        .form-group {
+            margin-bottom: 30px;
+            position: relative;
+            animation: fadeInUp 0.6s ease-out backwards;
+        }
+
+        .form-group:nth-child(1) { animation-delay: 0.1s; }
+        .form-group:nth-child(2) { animation-delay: 0.15s; }
+        .form-group:nth-child(3) { animation-delay: 0.2s; }
+        .form-group:nth-child(4) { animation-delay: 0.25s; }
+        .form-group:nth-child(5) { animation-delay: 0.3s; }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        label {
+            font-weight: 600;
+            color: white;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            font-size: 15px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .info-icon {
+            margin-left: 10px;
+            width: 22px;
+            height: 22px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: help;
+            transition: all 0.3s;
+            box-shadow: 0 4px 10px rgba(102, 126, 234, 0.5);
+        }
+
+        .info-icon:hover {
+            transform: scale(1.3) rotate(360deg);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.8);
+        }
+
+        .form-control, select {
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            padding: 15px 20px;
+            font-size: 18px;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            background: rgba(255, 255, 255, 0.98);
+            color: #000 !important;
+            font-weight: 600;
+        }
+
+        /* 🔥 FORCE INPUT TEXT VISIBILITY FIX */
+        input.form-control,
+        select.form-control {
+            color: #000000 !important;          /* Force BLACK text */
+            background-color: #ffffff !important;
+            -webkit-text-fill-color: #000000 !important;
+            opacity: 1 !important;
+        }
+
+        /* When typing */
+        input.form-control:focus,
+        select.form-control:focus {
+            color: #000000 !important;
+            -webkit-text-fill-color: #000000 !important;
+            background-color: #ffffff !important;
+        }
+
+        /* Disable weird autofill styling */
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover,
+        input:-webkit-autofill:focus {
+            -webkit-text-fill-color: #000000 !important;
+            box-shadow: 0 0 0px 1000px #ffffff inset !important;
+        }
+
+
+
+        .form-control::placeholder {
+            color: rgba(26, 26, 46, 0.4);
+            font-weight: 500;
+        }
+        
+        /* Better visibility for input text */
+        input.form-control {
+            background: rgba(255, 255, 255, 0.98);
+        }
+        
+        input.form-control::-webkit-input-placeholder {
+            color: rgba(26, 26, 46, 0.4);
+        }
+        
+        input.form-control:-moz-placeholder {
+            color: rgba(26, 26, 46, 0.4);
+        }
+        
+        input.form-control::-moz-placeholder {
+            color: rgba(26, 26, 46, 0.4);
+        }
+        
+        input.form-control:-ms-input-placeholder {
+            color: rgba(26, 26, 46, 0.4);
+        }
+
+        .form-control:focus, select:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 6px rgba(102, 126, 234, 0.2), 0 10px 30px rgba(102, 126, 234, 0.3);
+            outline: none;
+            transform: translateY(-3px) scale(1.02);
+            background: rgba(255, 255, 255, 1);
+        }
+
+        .form-control:hover, select:hover {
+            border-color: rgba(102, 126, 234, 0.6);
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 1);
+        }
+
+        select {
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.95);
+        
+            font-weight: 600;
+        }
+
+        select option {
+            background: #ffffff;
+            
+            font-weight: 600;
+            padding: 10px;
+        }
+        
+        /* Ensure select dropdown text is visible */
+        select:focus option:checked,
+        select option:checked {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .helper-text {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 6px;
+            font-style: italic;
+            padding-left: 5px;
+        }
+
+        .option-label {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2));
+            padding: 12px 18px;
+            border-radius: 12px;
+            margin-top: 10px;
+            border-left: 4px solid #667eea;
+            font-size: 13px;
+            animation: slideIn 0.4s ease-out;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .option-value {
+            font-weight: 800;
+            color: #f093fb;
+            margin-right: 8px;
+            text-shadow: 0 0 10px rgba(240, 147, 251, 0.5);
+        }
+
+        .option-label {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .btn-predict {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            background-size: 200% 200%;
+            color: white;
+            font-weight: 800;
+            border-radius: 50px;
+            padding: 20px;
+            font-size: 20px;
+            border: none;
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            animation: gradientShift 3s ease infinite;
+        }
+
+        .btn-predict::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn-predict:hover::before {
+            width: 400px;
+            height: 400px;
+        }
+
+        .btn-predict:hover {
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 20px 50px rgba(102, 126, 234, 0.8);
+            color: white;
+        }
+
+        .btn-predict:active {
+            transform: translateY(-3px) scale(1.02);
+        }
+
+        /* Result Modal */
+        .result-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            animation: fadeIn 0.3s;
+        }
+
+        .result-modal.show {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .result-content {
+            text-align: center;
+            padding: 60px;
+            border-radius: 40px;
+            max-width: 600px;
+            position: relative;
+            overflow: hidden;
+            animation: zoomIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        @keyframes zoomIn {
+            from {
+                opacity: 0;
+                transform: scale(0.3) rotate(-10deg);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) rotate(0);
+            }
+        }
+
+        .result-good {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            box-shadow: 0 30px 80px rgba(17, 153, 142, 0.6);
+        }
+
+        .result-bad {
+            background: linear-gradient(135deg, #ee0979 0%, #ff6a00 100%);
+            box-shadow: 0 30px 80px rgba(238, 9, 121, 0.6);
+        }
+
+        .result-content::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
+            animation: rotate 10s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .result-icon {
+            font-size: 100px;
+            display: block;
+            margin-bottom: 20px;
+            animation: iconPop 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.3s backwards;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes iconPop {
+            0% {
+                opacity: 0;
+                transform: scale(0) rotate(-180deg);
+            }
+            50% {
+                transform: scale(1.2) rotate(10deg);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) rotate(0);
+            }
+        }
+
+        .result-title {
+            font-size: 48px;
+            font-weight: 900;
+            color: white;
+            margin-bottom: 15px;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            animation: slideDown 0.6s 0.4s backwards;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result-message {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.95);
+            margin-bottom: 30px;
+            line-height: 1.6;
+            animation: fadeIn 0.6s 0.6s backwards;
+            position: relative;
+            z-index: 1;
+        }
+
+        .result-details {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            border-radius: 20px;
+            margin: 20px 0;
+            animation: fadeIn 0.6s 0.8s backwards;
+            position: relative;
+            z-index: 1;
+        }
+
+        .result-stat {
+            display: inline-block;
+            margin: 10px 20px;
+            color: white;
+        }
+
+        .result-stat-value {
+            font-size: 32px;
+            font-weight: 800;
+            display: block;
+        }
+
+        .result-stat-label {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: white;
+            animation: confetti-fall 3s linear forwards;
+        }
+
+        @keyframes confetti-fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .close-modal {
+            margin-top: 20px;
+            padding: 15px 40px;
+            background: rgba(255, 255, 255, 0.3);
+            border: 2px solid white;
+            color: white;
+            border-radius: 50px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 16px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .close-modal:hover {
+            background: white;
+            color: #764ba2;
+            transform: scale(1.1);
+        }
+
+        footer {
+            color: rgba(255, 255, 255, 0.9);
+            text-align: center;
+            margin-top: 40px;
+            font-size: 16px;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+            animation: fadeIn 1.5s ease-out;
+        }
+
+        footer strong {
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            padding: 6px 16px;
+            border-radius: 25px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading {
+            pointer-events: none;
+            opacity: 0.8;
+        }
+
+        .loading::after {
+            content: '';
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            top: 50%;
+            left: 50%;
+            margin-left: -12px;
+            margin-top: -12px;
+            border: 4px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        input.form-control,
+
+        select.form-control {
+            line-height: 1.6 !important;       
+            padding-top: 10px !important;
+            padding-bottom: 10px !important;
+            height: auto !important;
+
+            appearance: none !important;
+            -webkit-appearance: none !important;
+            -moz-appearance: none !important;
+
+            color: #000000 !important;
+            background-color: #ffffff !important;
+        }
+
+
+        input.form-control:focus,
+        select.form-control:focus {
+            color: #000000 !important;
+            background-color: #ffffff !important;
+            -webkit-text-fill-color: #000000 !important;
+        }
+
+        /* Chrome autofill */
+        input:-webkit-autofill {
+            -webkit-text-fill-color: #000000 !important;
+            box-shadow: 0 0 0 1000px #ffffff inset !important;
+        }
+
+
+
+    </style>
 </head>
-<body bgcolor="sky blue">
-<p> <h1> Credit Card Risk Prediction </h1></p>
 
-<div class="container text-center">
-    <form action="/predict" method="POST">
-        <input type="number" name="Age" placeholder="Age"><br>
-        <input type="number" name="NumberOfOpenCreditLinesAndLoans_yeo_trim" placeholder="NumberOfOpenCreditLinesAndLoans_yeo_trim"><br>
-        <input type="number" name="NumberRealEstateLoansOrLines_yeo_trim" placeholder="NumberRealEstateLoansOrLines_yeo_trim"><br>
-        <input type="number" name="MonthlyIncome_replaced_yeo_trim" placeholder="MonthlyIncome_replaced_yeo_trim"><br>
-        <input type="number" name="Gender_male" placeholder="Gender_male"><br>
-        <input type="number" name="Region_East" placeholder="Region_East"><br>
-        <input type="number" name="Region_North" placeholder="Region_North"><br>
-        <input type="number" name="Region_South" placeholder="Region_South"><br>
-        <input type="number" name="Region_west" placeholder="Region_west"><br>
-        <input type="number" name="RentedOwnHouse" placeholder="RentedOwnHouse"><br>
-        <input type="number" name="Occupation" placeholder="Occupation"><br>
-        <input type="number" name="Education" placeholder="Education"><br>
+<body>
 
-
-        <button class = 'btn btn-success'>submit</button>
-
-
-    </form>
-
-     <h3><strong>Experience = {{ prediction_text }}</strong></h3>
-
-        <br>
-        <br>
-
-        <p> <h1> Project By karthik_vana  </h1> </p>
-    <p><h2> Data Analyst | Data Engineer | ML engineer </h2></p>
-
-
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-        crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-        crossorigin="anonymous"></script>
-
+<!-- Welcome Screen -->
+<div class="welcome-screen">
+    <div class="welcome-content">
+        <div class="welcome-title">🚀 Welcome</div>
+        <div class="welcome-subtitle">AI-Powered 💳Credit Risk Prediction</div>
+        <div class="welcome-loader"></div>
+    </div>
 </div>
+
+<!-- Animated background -->
+<div class="stars" id="stars"></div>
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+<div class="orb orb3"></div>
+
+<div class="container d-flex justify-content-center align-items-center">
+    <div class="col-md-9 col-lg-8 mt-4 mb-5">
+        <div class="main-card">
+
+            <h1 class="text-center">💳Credit Risk Predictor</h1>
+            <p class="subtitle text-center">Advanced Machine Learning for Creditworthiness Analysis</p>
+
+            <form action="/predict" method="POST" onsubmit="handleSubmit(event)">
+
+                <!-- Personal Info -->
+                <div class="section-title">
+                    <span class="icon">👤</span>
+                    Personal Information
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        Age
+                        <span class="info-icon" title="Enter customer's age in years">i</span>
+                    </label>
+                    <input type="number" name="age_yeo_trim" class="form-control" placeholder="e.g., 35" required>
+                    <div class="helper-text">Customer's age in years</div>
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        Gender
+                        <span class="info-icon" title="Select customer's gender">i</span>
+                    </label>
+                    <select name="Gender_Male" class="form-control">
+                        <option value="1">Male</option>
+                        <option value="0">Female</option>
+                    </select>
+                    <div class="option-label">
+                        <span class="option-value">1</span> = Male &nbsp;|&nbsp; 
+                        <span class="option-value">0</span> = Female
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        Region
+                        <span class="info-icon" title="Select customer's geographical region">i</span>
+                    </label>
+                    <select class="form-control" onchange="setRegion(this.value)">
+                        <option value="Central">Central</option>
+                        <option value="East">East</option>
+                        <option value="North">North</option>
+                        <option value="South">South</option>
+                        <option value="West">West</option>
+                    </select>
+                    <div class="option-label">
+                        <span class="option-value">Central</span> (Base) &nbsp;|&nbsp; 
+                        <span class="option-value">East, North, South, West</span> = 1
+                    </div>
+                </div>
+
+                <input type="hidden" name="Region_East" id="Region_East" value="0">
+                <input type="hidden" name="Region_North" id="Region_North" value="0">
+                <input type="hidden" name="Region_South" id="Region_South" value="0">
+                <input type="hidden" name="Region_West" id="Region_West" value="0">
+
+                <!-- Financial Info -->
+                <div class="section-title">
+                    <span class="icon">💰</span>
+                    Financial Details
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        Monthly Income
+                        <span class="info-icon" title="Enter monthly income amount">i</span>
+                    </label>
+                    <input type="number" name="MonthlyIncome_replaced_yeo_trim" class="form-control" placeholder="e.g., 50000" required>
+                    <div class="helper-text">Customer's monthly income (in currency units)</div>
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        Open Credit Lines & Loans
+                        <span class="info-icon" title="Total number of active credit lines and loans">i</span>
+                    </label>
+                    <input type="number" name="NumberOfOpenCreditLinesAndLoans_yeo_trim" class="form-control" placeholder="e.g., 5" required>
+                    <div class="helper-text">Number of currently active credit lines and loans</div>
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        Real Estate Loans
+                        <span class="info-icon" title="Number of real estate loans or lines">i</span>
+                    </label>
+                    <input type="number" name="NumberRealEstateLoansOrLines_yeo_trim" class="form-control" placeholder="e.g., 1" required>
+                    <div class="helper-text">Number of mortgage and real estate loans</div>
+                </div>
+
+                <!-- Background -->
+                <div class="section-title">
+                    <span class="icon">🏠</span>
+                    Background Information
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        Housing Status
+                        <span class="info-icon" title="Does customer own or rent their house?">i</span>
+                    </label>
+                    <select name="Rented_OwnHouse_res" class="form-control">
+                        <option value="0">Own House</option>
+                        <option value="1">Rented</option>
+                    </select>
+                    <div class="option-label">
+                        <span class="option-value">0</span> = Own House &nbsp;|&nbsp; 
+                        <span class="option-value">1</span> = Rented
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        Occupation
+                        <span class="info-icon" title="Customer's occupation category">i</span>
+                    </label>
+                    <select name="Occupation_res" class="form-control">
+                        <option value="0">Non-Officer</option>
+                        <option value="1">Officer-1</option>
+                        <option value="2">Officer-2</option>
+                        <option value="3">Officer-3</option>
+                        <option value="4">Self-Employed</option>
+                    </select>
+                    <div class="option-label">
+                        <span class="option-value">0</span> = Non-Officer &nbsp;|&nbsp; 
+                        <span class="option-value">1</span> = Officer-1 &nbsp;|&nbsp; 
+                        <span class="option-value">2</span> = Officer-2 &nbsp;|&nbsp; 
+                        <span class="option-value">3</span> = Officer-3 &nbsp;|&nbsp; 
+                        <span class="option-value">4</span> = Self-Employed
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        Education Level
+                        <span class="info-icon" title="Customer's highest education level">i</span>
+                    </label>
+                    <select name="Education_res" class="form-control">
+                        <option value="0">Graduate</option>
+                        <option value="1">Matric</option>
+                        <option value="2">Professional</option>
+                        <option value="3">Post-Graduate</option>
+                        <option value="4">PhD</option>
+                    </select>
+                    <div class="option-label">
+                        <span class="option-value">0</span> = Graduate &nbsp;|&nbsp; 
+                        <span class="option-value">1</span> = Matric &nbsp;|&nbsp; 
+                        <span class="option-value">2</span> = Professional &nbsp;|&nbsp; 
+                        <span class="option-value">3</span> = Post-Graduate &nbsp;|&nbsp; 
+                        <span class="option-value">4</span> = PhD
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-predict btn-block mt-5" id="predictBtn">
+                    🔮 Analyze Credit Risk
+                </button>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<!-- Result Modal -->
+<div class="result-modal" id="resultModal">
+    <div class="result-content" id="resultContent">
+        <span class="result-icon" id="resultIcon"></span>
+        <div class="result-title" id="resultTitle"></div>
+        <div class="result-message" id="resultMessage"></div>
+        <div class="result-details" id="resultDetails"></div>
+        <button class="close-modal" onclick="closeModal()">Continue</button>
+    </div>
+</div>
+
+<footer>
+    Project by <strong>Karthik Vana</strong><br>
+    <span style="font-size: 14px; opacity: 0.8;">Data Engineer | ML Engineer | AI Engineer</span>
+</footer>
+
+<script>
+// Generate stars
+function createStars() {
+    const starsContainer = document.getElementById('stars');
+    for(let i = 0; i < 200; i++) {
+        let star = document.createElement('div');
+        star.className = 'star';
+        star.style.left = Math.random() * 100 + '%';
+        star.style.top = Math.random() * 100 + '%';
+        star.style.animationDelay = Math.random() * 3 + 's';
+        star.style.animationDuration = (2 + Math.random() * 2) + 's';
+        starsContainer.appendChild(star);
+    }
+}
+
+createStars();
+
+function setRegion(value) {
+    document.getElementById("Region_East").value = (value === "East") ? 1 : 0;
+    document.getElementById("Region_North").value = (value === "North") ? 1 : 0;
+    document.getElementById("Region_South").value = (value === "South") ? 1 : 0;
+    document.getElementById("Region_West").value = (value === "West") ? 1 : 0;
+}
+
+function handleSubmit(event) {
+    const btn = document.getElementById('predictBtn');
+    btn.classList.add('loading');
+    btn.innerHTML = '🔄 Analyzing...';
+}
+
+function createConfetti() {
+    for(let i = 0; i < 50; i++) {
+        let confetti = document.createElement('div');
+        confetti.className = 'confetti';
+        confetti.style.left = Math.random() * 100 + '%';
+        confetti.style.top = -10 + 'px';
+        confetti.style.background = `hsl(${Math.random() * 360}, 100%, 70%)`;
+        confetti.style.animationDelay = Math.random() * 0.5 + 's';
+        confetti.style.animationDuration = (2 + Math.random() * 2) + 's';
+        document.getElementById('resultContent').appendChild(confetti);
+    }
+}
+
+function showResult(isGood) {
+    const modal = document.getElementById('resultModal');
+    const content = document.getElementById('resultContent');
+    const icon = document.getElementById('resultIcon');
+    const title = document.getElementById('resultTitle');
+    const message = document.getElementById('resultMessage');
+    const details = document.getElementById('resultDetails');
+
+    if(isGood) {
+        content.className = 'result-content result-good';
+        icon.textContent = '✅';
+        title.textContent = 'Approved!';
+        message.innerHTML = 'This customer demonstrates <strong>excellent creditworthiness</strong> and poses minimal risk. Credit application is recommended for approval.';
+        details.innerHTML = `
+            <div class="result-stat">
+                <span class="result-stat-value">95%</span>
+                <span class="result-stat-label">Confidence</span>
+            </div>
+            <div class="result-stat">
+                <span class="result-stat-value">Low</span>
+                <span class="result-stat-label">Risk Level</span>
+            </div>
+            <div class="result-stat">
+                <span class="result-stat-value">✓</span>
+                <span class="result-stat-label">Approved</span>
+            </div>
+        `;
+        createConfetti();
+    } else {
+        content.className = 'result-content result-bad';
+        icon.textContent = '⚠️';
+        title.textContent = 'High Risk';
+        message.innerHTML = 'This customer profile indicates <strong>elevated credit risk</strong>. Further review and verification are strongly recommended before approval.';
+        details.innerHTML = `
+            <div class="result-stat">
+                <span class="result-stat-value">88%</span>
+                <span class="result-stat-label">Confidence</span>
+            </div>
+            <div class="result-stat">
+                <span class="result-stat-value">High</span>
+                <span class="result-stat-label">Risk Level</span>
+            </div>
+            <div class="result-stat">
+                <span class="result-stat-value">⚠</span>
+                <span class="result-stat-label">Review Needed</span>
+            </div>
+        `;
+    }
+
+    modal.classList.add('show');
+}
+
+function closeModal() {
+    document.getElementById('resultModal').classList.remove('show');
+    document.getElementById('predictBtn').classList.remove('loading');
+    document.getElementById('predictBtn').innerHTML = '🔮Predict Credit Risk';
+}
+
+// Check for prediction result from Flask
+var predictionText = "{{ prediction_text }}";
+if(predictionText) {
+    setTimeout(() => {
+        if(predictionText === "Good Customer") {
+            showResult(true);
+        } else {
+            showResult(false);
+        }
+    }, 500);
+}
+</script>
+
 </body>
 </html>
