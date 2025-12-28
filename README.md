@@ -10,7 +10,7 @@
 ![Pandas](https://img.shields.io/badge/Pandas-150458?style=for-the-badge&logo=pandas&logoColor=white)
 ![Deployed](https://img.shields.io/badge/Deployed-Render-46E3B7?style=for-the-badge&logo=render&logoColor=white)
 
-### 🚀 [Live Application](https://credit-card-prediction-f3dn.onrender.com) | 📂 [GitHub Repository](https://github.com/karthik-vana/CREDIT-CARD_PREDICTION-)
+### 🚀 [Live Application](https://credit-card-prediction-1-lad8.onrender.com) | 📂 [GitHub Repository](https://github.com/karthik-vana/CREDIT-CARD_PREDICTION-)
 
 </div>
 
@@ -54,7 +54,7 @@ An intelligent ML system that:
 ## 🚀 Live Demo
 
 **Try the application now:**  
-👉 **[https://credit-card-prediction-f3dn.onrender.com](https://credit-card-prediction-f3dn.onrender.com)**
+👉 **[https://credit-card-prediction-f3dn.onrender.com](https://credit-card-prediction-1-lad8.onrender.com)**
 
 ### How to Use:
 1. Enter customer details (income, age, credit history, etc.)
@@ -368,7 +368,7 @@ git push origin main
 
 **4. Live URL:**
 ```
-https://credit-card-prediction-f3dn.onrender.com
+https://credit-card-prediction-1-lad8.onrender.com
 ```
 
 ---
@@ -506,9 +506,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 Building intelligent ML systems that solve real-world problems
 
 [![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/karthik-vana)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](YOUR_LINKEDIN_LINK)
-[![Email](https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:YOUR_EMAIL)
-[![Portfolio](https://img.shields.io/badge/Portfolio-FF5722?style=for-the-badge&logo=google-chrome&logoColor=white)](YOUR_PORTFOLIO_LINK)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/karthik-vana/)
+[![Email](https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white)](karthikvana236@gmail.com)
+[![Portfolio](https://img.shields.io/badge/Portfolio-FF5722?style=for-the-badge&logo=google-chrome&logoColor=white)](https://portfolio-ns32.onrender.com)
 
 ---
 
